@@ -10,8 +10,8 @@ module Iyzipay
 
         def to_pki_string(request)
           PkiBuilder.new.append_super(super).
-              append_price(:locale, request[:locale]).
-              append_price(:conversationId, request[:conversationId]).
+              append(:locale, request[:locale]).
+              append(:conversationId, request[:conversationId]).
               append(:callbackUrl, request[:callbackUrl]).
               append(:pricingPlanReferenceCode, request[:pricingPlanReferenceCode]).
               append(:subscriptionInitialStatus, request[:subscriptionInitialStatus]).
