@@ -1,39 +1,33 @@
+# frozen_string_literal: true
+
 module Iyzipay
   module Model
     module V2
-      class Product < IyzipayResource
-        def create(request = {}, options)
-          pki_string = to_pki_string_create(request)
-          HttpClient.post("#{options.base_url}/v2/subscription/products/",
-                          get_http_header(pki_string, options), request.to_json)
+      class Product < IyzipayResourceV2
+        @resource = '/v2/subscription/products'
+
+        def list(options)
+          header = get_http_header(options, @resource)
+          HttpClient.get(base_url(options), header)
         end
 
-        def update(request = {}, options)
-          pki_string = to_pki_string_update(request)
-          HttpClient.put("#{options.base_url}/v2/subscription/products/#{request[:productReferenceCode]}",
-                         get_http_header(pki_string, options), request.to_json)
+        def create(request, options)
+          data = request.to_json
+          header = get_http_header(options, @resource, data)
+          HttpClient.post(base_url(options), header, data)
         end
 
-        def to_pki_string_create(request)
-          unless request.nil?
-            PkiBuilder.new.
-                append(:locale, request[:locale]).
-                append(:conversationId, request[:conversationId]).
-                append(:name, request[:name]).
-                append(:description, request[:description]).
-                get_request_string
-          end
+        def update(request, options)
+          data = request.to_json
+          url = "#{base_url(options)}/#{request[:productReferenceCode]}"
+          header = get_http_header(options, url, data)
+          HttpClient.put(url, header, data)
         end
-        def to_pki_string_update(request)
-          unless request.nil?
-            PkiBuilder.new.
-                append(:locale, request[:locale]).
-                append(:conversationId, request[:conversationId]).
-                append(:productReferenceCode, request[:productReferenceCode]).
-                append(:name, request[:name]).
-                append(:description, request[:description]).
-                get_request_string
-          end
+
+        private
+
+        def base_url(options)
+          "#{options.base_url}#{@resource}"
         end
       end
     end
