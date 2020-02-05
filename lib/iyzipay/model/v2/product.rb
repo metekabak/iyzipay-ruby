@@ -4,30 +4,30 @@ module Iyzipay
   module Model
     module V2
       class Product < IyzipayResourceV2
-        @resource = '/v2/subscription/products'
+        RESOURCE = '/v2/subscription/products'
 
         def list(options)
-          header = get_http_header(options, @resource)
-          HttpClient.get(base_url(options), header)
+          header = get_http_header(options, RESOURCE)
+          HttpClient.get_even_on_error(base_url(options), header)
         end
 
         def create(request, options)
           data = request.to_json
-          header = get_http_header(options, @resource, data)
-          HttpClient.post(base_url(options), header, data)
+          header = get_http_header(options, RESOURCE, data)
+          HttpClient.post_even_on_error(base_url(options), header, data)
         end
 
         def update(request, options)
           data = request.to_json
           url = "#{base_url(options)}/#{request[:productReferenceCode]}"
           header = get_http_header(options, url, data)
-          HttpClient.put(url, header, data)
+          HttpClient.put_even_on_error(url, header, data)
         end
 
         private
 
         def base_url(options)
-          "#{options.base_url}#{@resource}"
+          "#{options.base_url}#{RESOURCE}"
         end
       end
     end
