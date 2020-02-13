@@ -19,15 +19,19 @@ module Iyzipay
 
         def update(request, options)
           data = request.to_json
-          url = "#{base_url(options)}/#{request[:productReferenceCode]}"
-          header = get_http_header(options, url, data)
-          HttpClient.put_even_on_error(url, header, data)
+          path = path_for_action(request[:productReferenceCode])
+          header = get_http_header(options, path, data)
+          HttpClient.put_even_on_error(base_url(options, path), header, data)
         end
 
         private
 
-        def base_url(options)
-          "#{options.base_url}#{RESOURCE}"
+        def base_url(options, path = RESOURCE)
+          "#{options.base_url}#{path}"
+        end
+
+        def path_for_action(*path_args)
+          "#{RESOURCE}#{'/' + path_args.join('/')}"
         end
       end
     end

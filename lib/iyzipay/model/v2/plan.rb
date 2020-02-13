@@ -15,13 +15,13 @@ module Iyzipay
           path = path_for_action('pricing-plans', request[:pricingPlanReferenceCode])
           data = request.to_json
           header = get_http_header(options, path, data)
-          HttpClient.put_even_on_error(base_url(options, path), header, data)
+          HttpClient.post_even_on_error(base_url(options, path), header, data)
         end
 
         private
 
         def base_url(options, path)
-          "#{options.base_url}/#{path}/#{reference_code}"
+          "#{options.base_url}#{path}"
         end
 
         def path_for_action(*args)
