@@ -21,7 +21,7 @@ module Iyzipay
           data = request.to_json
           path = path_for_action(request[:productReferenceCode])
           header = get_http_header(options, path, data)
-          HttpClient.put_even_on_error(base_url(options, path), header, data)
+          HttpClient.post_even_on_error(base_url(options, path), header, data)
         end
 
         private
