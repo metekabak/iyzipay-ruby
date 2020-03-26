@@ -5,7 +5,7 @@ module Iyzipay
         RESOURCE = '/v2/subscription'
 
         def create(request, options)
-          path = path_for_action('products', request[:productReferenceCode])
+          path = path_for_action('products', request[:productReferenceCode], 'pricing-plans')
           data = request.to_json
           header = get_http_header(options, path, data)
           HttpClient.post_even_on_error(base_url(options, path), header, data)
