@@ -1,7 +1,7 @@
 module Iyzipay
   module Model
     module V2
-      class CheckoutForm < IyzipayResource
+      class CheckoutForm < IyzipayResourceV2
         RESOURCE = '/v2/subscription/checkoutform'
 
         def retrieve(request, options)
