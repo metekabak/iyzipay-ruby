@@ -7,13 +7,13 @@ module Iyzipay
         def retrieve(request, options)
           data = request.to_json
           header = get_http_header(options, RESOURCE, data)
-          HttpClient.post_even_on_error(base_url(options), header, data)
+          HttpClient.post_even_on_error(base_url(options, request[:token]), header, data)
         end
 
         private
 
-        def base_url(options)
-          "#{options.base_url}#{RESOURCE}"
+        def base_url(options, token)
+          "#{options.base_url}#{RESOURCE}/#{token}"
         end
       end
     end
